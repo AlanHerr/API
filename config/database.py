@@ -27,7 +27,7 @@ def get_engine():
     if DATABASE_URI:
         try:
             # Crea el motor de conexión usando la URI remota
-            engine = create_engine(DATABASE_URI, echo=True)
+            engine = create_engine(DATABASE_URI, echo=False)
             # Probar conexión abriendo y cerrando una conexión
             conn = engine.connect()
             conn.close()
@@ -37,7 +37,7 @@ def get_engine():
             # Si falla la conexión, muestra un warning y usa SQLite local
             logging.warning('No se pudo conectar a la base de datos remota. Usando SQLite local.')
     # Si no hay URI remota o falla, usa SQLite local
-    engine = create_engine(SQLITE_URI, echo=True)
+    engine = create_engine(SQLITE_URI, echo=False)
     return engine
 
 # Obtiene el motor de conexión (remoto o local)

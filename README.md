@@ -1,6 +1,13 @@
 # API de Productos
 
+# API de Productos
 Este proyecto es una API RESTful desarrollada con Flask y SQLAlchemy para la gestión de productos de una tienda. La base de datos principal está alojada en Railway (PostgreSQL), con opción de respaldo local en SQLite.
+
+Las dependencias del proyecto están listadas en el archivo `requirements.txt`. Puedes instalar todas las dependencias necesarias ejecutando:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Estructura del Proyecto
 
@@ -65,10 +72,9 @@ MYSQL_URI=postgresql://usuario:contraseña@host:puerto/nombre_db
 ```
 
 ## Cómo ejecutar
-
 1. Instala las dependencias:
    ```bash
-   pip install flask sqlalchemy psycopg2-binary python-dotenv
+   pip install -r requirements.txt
    ```
 2. Ejecuta la aplicación:
    ```bash

@@ -45,7 +45,7 @@ curl -i -X PUT http://localhost:5000/products/99 \
   -d '{"name": "Unknown", "category": "Unknown", "price": 0, "quantity": 0}'
 
 # 8. Eliminar un producto existente (ejemplo: 3)
-curl -i -X DELETE http://localhost:5000/products/3 \
+curl -i -X DELETE http://localhost:5000/products/2 \
   -H "Authorization: Bearer $TOKEN"
 
 # 9. Eliminar un producto inexistente (ejemplo: 99)

@@ -1,17 +1,9 @@
 
-
-/**
- * Componente para mostrar y gestionar productos.
- * Permite ver, añadir, editar y eliminar productos según el modo.
- * @param {string} token - JWT para autenticación
- * @param {string} mode - Modo de operación: 'view', 'add', 'edit', 'delete'
- * @param {function} onBack - Callback para volver a la vista principal
- */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+
 function Products({ token, mode = "view", onBack }) {
-  // Estados para productos, formularios, mensajes y carga
   const [products, setProducts] = useState([]);
   const [detail, setDetail] = useState(null);
   const [error, setError] = useState("");
@@ -21,14 +13,10 @@ function Products({ token, mode = "view", onBack }) {
   const [editId, setEditId] = useState(null);
   const [editForm, setEditForm] = useState({ name: "", category: "", price: "", quantity: "" });
 
-  // Cargar productos al montar el componente
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  /**
-   * Obtiene todos los productos de la API.
-   */
   const fetchProducts = async () => {
     try {
       const res = await axios.get("/products", {
@@ -40,10 +28,6 @@ function Products({ token, mode = "view", onBack }) {
     }
   };
 
-  /**
-   * Obtiene el detalle de un producto por ID.
-   * @param {number} id - ID del producto
-   */
   const fetchProductDetail = async (id) => {
     setError("");
     setSuccess("");
@@ -59,15 +43,9 @@ function Products({ token, mode = "view", onBack }) {
 
   // Vista: Añadir producto
   if (mode === "add") {
-    /**
-     * Maneja cambios en el formulario de creación.
-     */
     const handleChange = (e) => {
       setForm({ ...form, [e.target.name]: e.target.value });
     };
-    /**
-     * Envía el formulario para crear un producto.
-     */
     const handleSubmit = async (e) => {
       e.preventDefault();
       setError("");
@@ -114,9 +92,6 @@ function Products({ token, mode = "view", onBack }) {
 
   // Vista: Editar producto
   if (mode === "edit") {
-    /**
-     * Permite editar productos en línea en la tabla.
-     */
     return (
       <div>
         <h2>Editar producto</h2>
@@ -182,9 +157,6 @@ function Products({ token, mode = "view", onBack }) {
 
   // Vista: Eliminar producto
   if (mode === "delete") {
-    /**
-     * Permite eliminar productos desde la tabla.
-     */
     return (
       <div>
         <h2>Eliminar producto</h2>

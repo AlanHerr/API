@@ -20,6 +20,8 @@ Proyecto integral para la gestión de productos y usuarios de una tienda, compue
 
 ---
 
+
+
 ## Estructura del Proyecto
 
 ```
@@ -65,8 +67,9 @@ API/
 
 ---
 
-## Instalación y Ejecución
 
+
+## Instalación y Ejecución
 
 ### Backend (API Flask)
 1. **Crea y activa un entorno virtual (.venv):**
@@ -99,6 +102,8 @@ API/
    ```
 
 ---
+
+
 
 ## Variables de Entorno
 
@@ -164,8 +169,93 @@ Puedes modificar los datos de ejemplo según tus necesidades.
 - Los endpoints devuelven respuestas en formato JSON.
 - Para pruebas automáticas, puedes usar herramientas como Postman, Insomnia o pytest.
 
+### Pruebas mínimas recomendadas
+
+1. **Login con credenciales válidas:**
+   - Espera un token JWT válido.
+2. **Login con credenciales inválidas:**
+   - Espera error 401.
+3. **Acceso a ruta protegida sin token:**
+   - Espera error 401.
+4. **Acceso a ruta protegida con token válido:**
+   - Espera respuesta exitosa.
+
 ---
 
 ## Autor
 
 AlanHerr
+
+
+## Ejemplo de Modelos
+
+### Producto
+```python
+class Product(Base):
+   __tablename__ = 'products'
+   id = Column(Integer, primary_key=True)
+   name = Column(String(100), nullable=False)
+   category = Column(String(50), nullable=False)
+   price = Column(Float, nullable=False)
+   quantity = Column(Integer, nullable=False)
+```
+
+### Usuario
+```python
+class User(Base):
+   __tablename__ = 'users'
+   id = Column(Integer, primary_key=True)
+   username = Column(String(80), unique=True, nullable=False)
+   password = Column(String(255), nullable=False)
+```
+
+
+## Variables de Entorno
+
+Agrega tu URI de Railway y la clave JWT en el archivo `.env`:
+
+```
+MYSQL_URI=postgresql://usuario:contraseña@host:puerto/nombre_db
+JWT_SECRET_KEY=tu_clave_secreta_jwt
+```
+
+
+## Cómo ejecutar el backend
+1. Instala las dependencias:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Ejecuta la aplicación:
+   ```bash
+   python app.py
+   ```
+
+## Cómo ejecutar el frontend
+1. Entra a la carpeta del frontend:
+   ```bash
+   cd frontend
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+3. Inicia la app React:
+   ```bash
+   npm start
+   ```
+
+
+## Notas
+- El proyecto está modularizado siguiendo buenas prácticas (modelo, repositorio, servicio, controlador).
+- Seguridad: Todos los endpoints sensibles están protegidos con JWT.
+- Las contraseñas se almacenan de forma segura (hash).
+- Si la conexión a Railway falla, se usa SQLite local como respaldo.
+- El frontend React consume el API de forma segura y moderna.
+- Los endpoints devuelven respuestas en formato JSON.
+- No subas nunca la carpeta `node_modules/` al repositorio. Solo versiona el código fuente y los archivos de configuración (`package.json`, `package-lock.json`).
+
+---
+
+---
+
+**Autor:** AlanHerr

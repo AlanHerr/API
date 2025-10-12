@@ -200,10 +200,6 @@ Puedes modificar los datos de ejemplo según tus necesidades.
 
 ---
 
-## Autor
-
-AlanHerr
-
 
 ## Ejemplo de Modelos
 

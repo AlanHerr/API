@@ -105,7 +105,8 @@ API/
 
 
 
-## Variables de Entorno
+
+## Variables de Entorno (Backend)
 
 Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 
@@ -116,6 +117,23 @@ JWT_SECRET_KEY=tu_clave_secreta_jwt
 
 - `DATABASE_URI`: URI de Railway PostgreSQL (o SQLite para desarrollo local).
 - `JWT_SECRET_KEY`: Clave secreta para firmar los tokens JWT.
+
+---
+
+## Variables de Entorno (Frontend)
+
+El frontend React puede tener su propio archivo `.env` dentro de la carpeta `frontend/` para definir variables de entorno específicas del cliente. Estas variables permiten configurar, por ejemplo, la URL de la API backend o claves públicas de servicios externos.
+
+Ejemplo de `.env` en `frontend/`:
+
+```
+REACT_APP_API_URL=http://localhost:5000
+REACT_APP_GOOGLE_MAPS_KEY=tu_clave_publica
+```
+
+**Notas:**
+- Todas las variables deben comenzar con `REACT_APP_` para que React las reconozca.
+- Nunca pongas datos sensibles o secretos privados en el `.env` del frontend, ya que el código es visible para el usuario final.
 
 ---
 
@@ -218,32 +236,6 @@ Agrega tu URI de Railway y la clave JWT en el archivo `.env`:
 MYSQL_URI=postgresql://usuario:contraseña@host:puerto/nombre_db
 JWT_SECRET_KEY=tu_clave_secreta_jwt
 ```
-
-
-## Cómo ejecutar el backend
-1. Instala las dependencias:
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. Ejecuta la aplicación:
-   ```bash
-   python app.py
-   ```
-
-## Cómo ejecutar el frontend
-1. Entra a la carpeta del frontend:
-   ```bash
-   cd frontend
-   ```
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-3. Inicia la app React:
-   ```bash
-   npm start
-   ```
-
 
 ## Notas
 - El proyecto está modularizado siguiendo buenas prácticas (modelo, repositorio, servicio, controlador).

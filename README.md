@@ -1,15 +1,24 @@
-# API de Productos
-
 
 # API de Productos
-Este proyecto es una solución completa para la gestión de productos y usuarios de una tienda, compuesta por una API RESTful desarrollada con Flask y SQLAlchemy, autenticación JWT, y un frontend moderno en React. La base de datos principal está alojada en Railway (PostgreSQL), con opción de respaldo local en SQLite.
 
-Las dependencias del backend están listadas en el archivo `requirements.txt`. Puedes instalar todas las dependencias necesarias ejecutando:
+Proyecto integral para la gestión de productos y usuarios de una tienda, compuesto por:
+- **Backend:** API RESTful con Flask, SQLAlchemy y autenticación JWT.
+- **Frontend:** React moderno y responsivo.
+- **Base de datos:** PostgreSQL (Railway) y respaldo local SQLite.
 
-```bash
-pip install -r requirements.txt
-```
+---
 
+## Tabla de Contenidos
+1. [Estructura del Proyecto](#estructura-del-proyecto)
+2. [Instalación y Ejecución](#instalación-y-ejecución)
+3. [Variables de Entorno](#variables-de-entorno)
+4. [Tabla de Endpoints](#tabla-de-endpoints)
+5. [Pruebas con curl_examples.sh](#pruebas-con-curlexamplessh)
+6. [Notas de Seguridad y Roles](#notas-de-seguridad-y-roles)
+7. [Testing y Buenas Prácticas](#testing-y-buenas-prácticas)
+8. [Autor](#autor)
+
+---
 
 ## Estructura del Proyecto
 
@@ -49,92 +58,33 @@ API/
 │       ├── Products.js
 │       └── setupProxy.js
 ├── .env
+├── requirements.txt
+├── curl_examples.sh
 └── README.md
 ```
 
+---
 
-## Descripción de Carpetas y Archivos
-
-- **app.py**: Punto de entrada de la aplicación Flask. Registra los endpoints y arranca el servidor.
-- **config/database.py**: Configura la conexión a la base de datos y provee sesiones para interactuar con ella.
-- **controller/products_controller.py**: Define los endpoints de la API para productos (GET, POST, PUT, DELETE).
-- **controller/user_controller.py**: Define los endpoints de la API para usuarios (registro, login, listado).
-- **model/products_models.py**: Define el modelo de datos `Product` (estructura de la tabla en la base de datos).
-- **model/user.py**: Define el modelo de datos `User` (estructura de la tabla de usuarios).
-- **repository/products_repository.py**: Implementa la lógica de acceso a datos de productos.
-- **repository/user_repository.py**: Implementa la lógica de acceso a datos de usuarios.
-- **service/products_service.py**: Orquesta la lógica de negocio de productos.
-- **service/user_service.py**: Orquesta la lógica de negocio de usuarios y autenticación.
-- **frontend/**: Aplicación React para la gestión visual de productos y usuarios.
-   - **public/index.html**: HTML base de la app React.
-   - **src/App.js**: Componente principal, navegación y autenticación.
-   - **src/Products.js**: CRUD de productos y vistas.
-   - **src/Login.js**: Formulario de login.
-   - **src/Register.js**: Formulario de registro.
-   - **src/App.css**: Estilos modernos y responsivos.
-   - **src/setupProxy.js**: Proxy para desarrollo local.
-- **.env**: Contiene la URI de la base de datos remota y otras variables sensibles.
+## Instalación y Ejecución
 
 
-## Endpoints Principales
-
-### Productos
-- `GET /products`: Lista todos los productos. (Requiere JWT)
-- `GET /products/<id>`: Obtiene un producto por ID. (Requiere JWT)
-- `POST /products`: Crea un producto nuevo. (Requiere JWT)
-- `PUT /products/<id>`: Actualiza un producto existente. (Requiere JWT)
-- `DELETE /products/<id>`: Elimina un producto. (Requiere JWT)
-
-### Usuarios y Autenticación
-- `POST /users/register`: Registra un nuevo usuario.
-- `POST /users/login`: Inicia sesión y devuelve un token JWT.
-- `GET /users/`: Lista todos los usuarios registrados. (Requiere JWT)
-
-
-## Ejemplo de Modelos
-
-### Producto
-```python
-class Product(Base):
-   __tablename__ = 'products'
-   id = Column(Integer, primary_key=True)
-   name = Column(String(100), nullable=False)
-   category = Column(String(50), nullable=False)
-   price = Column(Float, nullable=False)
-   quantity = Column(Integer, nullable=False)
-```
-
-### Usuario
-```python
-class User(Base):
-   __tablename__ = 'users'
-   id = Column(Integer, primary_key=True)
-   username = Column(String(80), unique=True, nullable=False)
-   password = Column(String(255), nullable=False)
-```
-
-
-## Variables de Entorno
-
-Agrega tu URI de Railway y la clave JWT en el archivo `.env`:
-
-```
-MYSQL_URI=postgresql://usuario:contraseña@host:puerto/nombre_db
-JWT_SECRET_KEY=tu_clave_secreta_jwt
-```
-
-
-## Cómo ejecutar el backend
-1. Instala las dependencias:
+### Backend (API Flask)
+1. **Crea y activa un entorno virtual (.venv):**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+2. Instala las dependencias:
    ```bash
    pip install -r requirements.txt
    ```
-2. Ejecuta la aplicación:
+3. Configura las variables de entorno (ver sección abajo).
+4. Ejecuta la aplicación:
    ```bash
    python app.py
    ```
 
-## Cómo ejecutar el frontend
+### Frontend (React)
 1. Entra a la carpeta del frontend:
    ```bash
    cd frontend
@@ -148,18 +98,74 @@ JWT_SECRET_KEY=tu_clave_secreta_jwt
    npm start
    ```
 
+---
 
-## Notas
-- El proyecto está modularizado siguiendo buenas prácticas (modelo, repositorio, servicio, controlador).
-- Seguridad: Todos los endpoints sensibles están protegidos con JWT.
-- Las contraseñas se almacenan de forma segura (hash).
-- Si la conexión a Railway falla, se usa SQLite local como respaldo.
-- El frontend React consume el API de forma segura y moderna.
+## Variables de Entorno
+
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
+```
+DATABASE_URI=postgresql://usuario:contraseña@host:puerto/nombre_db
+JWT_SECRET_KEY=tu_clave_secreta_jwt
+```
+
+- `DATABASE_URI`: URI de Railway PostgreSQL (o SQLite para desarrollo local).
+- `JWT_SECRET_KEY`: Clave secreta para firmar los tokens JWT.
+
+---
+
+## Tabla de Endpoints
+
+| Método | Endpoint              | Descripción                        | Autenticación |
+|--------|-----------------------|------------------------------------|---------------|
+| GET    | /products             | Lista todos los productos          | JWT           |
+| GET    | /products/<id>        | Obtiene un producto por ID         | JWT           |
+| POST   | /products             | Crea un producto nuevo             | JWT           |
+| PUT    | /products/<id>        | Actualiza un producto existente    | JWT           |
+| DELETE | /products/<id>        | Elimina un producto                | JWT           |
+| POST   | /users/register       | Registra un nuevo usuario          | No            |
+| POST   | /users/login          | Inicia sesión y devuelve JWT       | No            |
+| GET    | /users/               | Lista todos los usuarios           | JWT           |
+
+---
+
+## Pruebas con curl_examples.sh
+
+El archivo [`curl_examples.sh`](./curl_examples.sh) contiene ejemplos de cómo consumir todos los endpoints de la API usando `curl`, incluyendo:
+- Registro y login de usuario
+- Obtención de token JWT
+- CRUD de productos (casos de éxito y error)
+
+Para ejecutar los ejemplos:
+```bash
+chmod +x curl_examples.sh
+./curl_examples.sh
+```
+
+Puedes modificar los datos de ejemplo según tus necesidades.
+
+---
+
+## Notas de Seguridad y Roles
+
+- **Roles:** Actualmente todos los usuarios registrados pueden acceder a los endpoints protegidos (no hay distinción de roles).
+- **JWT:** Todos los endpoints de productos y el listado de usuarios requieren autenticación JWT.
+- **Contraseñas:** Se almacenan de forma segura (hash).
+- **Variables sensibles:** No subas `.env` ni credenciales al repositorio.
+- **Base de datos:** Si la conexión a Railway falla, se usa SQLite local como respaldo.
+
+---
+
+## Testing y Buenas Prácticas
+
+- El backend y frontend están modularizados siguiendo buenas prácticas (modelo, repositorio, servicio, controlador).
+- El frontend React permite probar todos los endpoints de la API de forma visual.
+- Puedes probar la API sin frontend usando el archivo [`curl_examples.sh`](./curl_examples.sh).
 - Los endpoints devuelven respuestas en formato JSON.
-- No subas nunca la carpeta `node_modules/` al repositorio. Solo versiona el código fuente y los archivos de configuración (`package.json`, `package-lock.json`).
+- Para pruebas automáticas, puedes usar herramientas como Postman, Insomnia o pytest.
 
 ---
 
----
+## Autor
 
-**Autor:** AlanHerr
+AlanHerr

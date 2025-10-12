@@ -1,29 +1,44 @@
 
-# Importa las funciones CRUD del repositorio de productos
+
+"""
+Servicio de productos: lógica de negocio para CRUD de productos.
+"""
+
 from repository.products_repository import (
     get_all_products,
-    get_product_by_id,
+    """
     create_product,
     update_product,
     delete_product
+    # Importar funciones del repositorio de productos
 )
 
-# Servicio para listar todos los productos
 def list_products():
-    return get_all_products()  # Llama al repositorio para obtener todos los productos
+    """
+    Devuelve la lista de todos los productos.
+    """
+    return get_all_products()
 
-# Servicio para obtener un producto por su ID
 def get_product(product_id):
-    return get_product_by_id(product_id)  # Llama al repositorio para obtener el producto por ID
+    """
+    Devuelve un producto por su ID.
+    """
+    return get_product_by_id(product_id)
 
-# Servicio para agregar un nuevo producto
 def add_product(data):
-    return create_product(data)  # Llama al repositorio para crear el producto
+    """
+    Agrega un nuevo producto con los datos recibidos.
+    """
+    return create_product(data)
 
-# Servicio para modificar un producto existente
 def modify_product(product_id, data):
-    return update_product(product_id, data)  # Llama al repositorio para actualizar el producto
+    """
+    Modifica un producto existente con los datos recibidos.
+    """
+    return update_product(product_id, data)
 
-# Servicio para eliminar un producto
 def remove_product(product_id):
-    return delete_product(product_id)  # Llama al repositorio para eliminar el producto
+    """
+    Elimina un producto por su ID.
+    """
+    return delete_product(product_id)

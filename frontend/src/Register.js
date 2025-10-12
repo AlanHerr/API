@@ -1,12 +1,22 @@
+
+/**
+ * Componente de formulario de registro de usuario.
+ * Permite crear un nuevo usuario y muestra mensajes de éxito o error.
+ * @param {function} onRegister - Callback tras registro exitoso
+ */
 import React, { useState } from "react";
 import axios from "axios";
 
 function Register({ onRegister }) {
+  // Estados para usuario, contraseña, error y éxito
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  /**
+   * Envía el formulario de registro y maneja la creación de usuario.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

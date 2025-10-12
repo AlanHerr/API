@@ -1,16 +1,24 @@
 
+"""
+Modelo de datos para usuarios.
+Define la clase User para la tabla de usuarios en la base de datos.
+"""
+
 from sqlalchemy import Column, Integer, String
 from model.products_models import Base
-import logging
-
-logger = logging.getLogger(__name__)
 
 class User(Base):
+    """
+    Modelo User: representa un usuario en la base de datos.
+    Atributos:
+        id (int): ID primario.
+        username (str): Nombre de usuario único.
+        password (str): Contraseña hasheada.
+    """
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    username = Column(String(80), unique=True, nullable=False)
-    password = Column(String(255), nullable=False)
+    id = Column(Integer, primary_key=True)  # ID único del usuario
+    username = Column(String(80), unique=True, nullable=False)  # Nombre de usuario único
+    password = Column(String(255), nullable=False)  # Contraseña hasheada
 
     def __repr__(self):
-        logger.info(f'Representación de usuario solicitada: {self.username}')
         return f'<User {self.username}>'

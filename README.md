@@ -227,27 +227,6 @@ class User(Base):
    password = Column(String(255), nullable=False)
 ```
 
-
-## Variables de Entorno
-
-Agrega tu URI de Railway y la clave JWT en el archivo `.env`:
-
-```
-MYSQL_URI=postgresql://usuario:contraseña@host:puerto/nombre_db
-JWT_SECRET_KEY=tu_clave_secreta_jwt
-```
-
-## Notas
-- El proyecto está modularizado siguiendo buenas prácticas (modelo, repositorio, servicio, controlador).
-- Seguridad: Todos los endpoints sensibles están protegidos con JWT.
-- Las contraseñas se almacenan de forma segura (hash).
-- Si la conexión a Railway falla, se usa SQLite local como respaldo.
-- El frontend React consume el API de forma segura y moderna.
-- Los endpoints devuelven respuestas en formato JSON.
-- No subas nunca la carpeta `node_modules/` al repositorio. Solo versiona el código fuente y los archivos de configuración (`package.json`, `package-lock.json`).
-
----
-
 ---
 
 **Autor:** AlanHerr

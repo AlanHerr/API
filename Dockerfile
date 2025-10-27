@@ -18,5 +18,7 @@ COPY . .
 # Expose default port (Railway provides $PORT at runtime)
 EXPOSE 8000
 
-# Start the app with gunicorn (Railway provides $PORT env var)
-CMD ["gunicorn", "app:app", "--bind", "0.0.0.0:$PORT"]
+# Start the app with gunicorn (Railway provides $PORT env var).
+# Use a shell to allow environment variable expansion. Provide a default port 8000
+# in case $PORT is not set (useful for local testing).
+CMD ["sh", "-c", "gunicorn app:app --bind 0.0.0.0:${PORT:-8000}"]

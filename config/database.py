@@ -13,10 +13,18 @@ from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO)
 
 # Carga variables de entorno desde el archivo .env
+# Carga variables de entorno desde .env (local) y desde el entorno del contenedor
 load_dotenv()
 
-# Obtiene la URI de la base de datos remota desde la variable de entorno
-DATABASE_URI = os.getenv('MYSQL_URI')  # Usas esta variable en tu .env
+# Obtiene la URI de la base de datos remota desde variables de entorno.
+# Railway suele exponer `DATABASE_URL` o `RAILWAY_DATABASE_URL`. Mantenemos
+# `DATABASE_URI` y `MYSQL_URI` como fallback por compatibilidad.
+DATABASE_URI = (
+    os.getenv('DATABASE_URL')
+    or os.getenv('RAILWAY_DATABASE_URL')
+    or os.getenv('DATABASE_URI')
+    or os.getenv('MYSQL_URI')
+)
 # Define la URI para la base de datos local SQLite como respaldo
 SQLITE_URI = 'sqlite:///products_local.db'  # Nombre ajustado para productos
 
@@ -33,6 +41,13 @@ def get_engine():
             conn = engine.connect()
             conn.close()
             logging.info('Conexión a la base de datos remota exitosa.')
+            # Indicar de forma segura qué tipo de base de datos se está usando
+            if DATABASE_URI.startswith('sqlite'):
+                logging.info('Usando SQLite (archivo local).')
+            elif DATABASE_URI.startswith('postgres') or DATABASE_URI.startswith('postgresql'):
+                logging.info('Usando base de datos PostgreSQL remota.')
+            else:
+                logging.info('Usando base de datos remota (tipo desconocido).')
             return engine
         except OperationalError:
             # Si falla la conexión, muestra un warning y usa SQLite local

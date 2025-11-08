@@ -57,3 +57,41 @@ curl -i -X POST http://localhost:5000/products \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"name": "Jacket", "category": "Clothing", "price": 60, "quantity": 0}'
+
+echo "\n\n=== ENDPOINTS DE CONVERSIÓN DE MONEDAS ==="
+
+# 11. Convertir un monto de USD a MXN
+curl -i -X POST http://localhost:5000/currency/convert \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"amount": 100, "from_currency": "USD", "to_currency": "MXN"}'
+
+# 12. Convertir un monto de EUR a USD
+curl -i -X POST http://localhost:5000/currency/convert \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"amount": 50, "from_currency": "EUR", "to_currency": "USD"}'
+
+# 13. Obtener tasas de cambio actuales (base USD)
+curl -i http://localhost:5000/currency/rates \
+  -H "Authorization: Bearer $TOKEN"
+
+# 14. Obtener tasas de cambio con base EUR
+curl -i "http://localhost:5000/currency/rates?base_currency=EUR" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 15. Obtener lista de monedas soportadas
+curl -i http://localhost:5000/currency/supported \
+  -H "Authorization: Bearer $TOKEN"
+
+# 16. Obtener todos los productos con precios en MXN
+curl -i "http://localhost:5000/products/convert?currency=MXN" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 17. Obtener todos los productos con precios en EUR
+curl -i "http://localhost:5000/products/convert?currency=EUR" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 18. Obtener productos con precios en JPY (desde base USD)
+curl -i "http://localhost:5000/products/convert?currency=JPY&base_currency=USD" \
+  -H "Authorization: Bearer $TOKEN"

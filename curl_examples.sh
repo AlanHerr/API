@@ -6,7 +6,7 @@ curl -i -X POST http://localhost:5000/users/register \
 
 TOKEN=$(curl -s -X POST http://localhost:5000/users/login \
   -H "Content-Type: application/json" \
-  -d '{"username": "Ender11", "password": "12345"}' | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])")
+  -d '{"username": "usuario1", "password": "tu_contraseña"}' | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])")
 
 # 1. Obtener todos los productos
 curl -i http://localhost:5000/products \
@@ -59,39 +59,77 @@ curl -i -X POST http://localhost:5000/products \
   -d '{"name": "Jacket", "category": "Clothing", "price": 60, "quantity": 0}'
 
 echo "\n\n=== ENDPOINTS DE CONVERSIÓN DE MONEDAS ==="
+echo "Estos endpoints consumen la API externa ExchangeRate-API para obtener tasas actualizadas\n"
 
-# 11. Convertir un monto de USD a MXN
-curl -i -X POST http://localhost:5000/currency/convert \
+# 11. Convertir $100 USD a Pesos Mexicanos (MXN)
+# Resultado esperado: ~$1,850 MXN (1 USD ≈ 18.5 MXN)
+echo "\n11. Convertir \$100 USD → MXN (Peso Mexicano)"
+curl -X POST http://localhost:5000/currency/convert \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"amount": 100, "from_currency": "USD", "to_currency": "MXN"}'
 
-# 12. Convertir un monto de EUR a USD
-curl -i -X POST http://localhost:5000/currency/convert \
+# 12. Convertir $1 USD a Pesos Colombianos (COP)
+# Resultado esperado: ~3,780 COP (1 USD ≈ 3,780 COP)
+echo "\n\n12. Convertir \$1 USD → COP (Peso Colombiano)"
+curl -X POST http://localhost:5000/currency/convert \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"amount": 1, "from_currency": "USD", "to_currency": "COP"}'
+
+# 13. Convertir €50 EUR a Dólares (USD)
+# Resultado esperado: ~$58 USD (1 EUR ≈ 1.16 USD)
+echo "\n\n13. Convertir €50 EUR → USD (Dólar)"
+curl -X POST http://localhost:5000/currency/convert \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"amount": 50, "from_currency": "EUR", "to_currency": "USD"}'
 
-# 13. Obtener tasas de cambio actuales (base USD)
-curl -i http://localhost:5000/currency/rates \
+# 14. Convertir $1000 COP a Dólares (USD)
+# Resultado esperado: ~$0.26 USD
+echo "\n\n14. Convertir 1000 COP → USD (conversión inversa)"
+curl -X POST http://localhost:5000/currency/convert \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"amount": 1000, "from_currency": "COP", "to_currency": "USD"}'
+
+# 15. Obtener tasas de cambio actuales (base USD)
+# Muestra todas las tasas desde USD a las 166 monedas
+echo "\n\n15. Obtener tasas de cambio actuales (base USD)"
+curl http://localhost:5000/currency/rates \
   -H "Authorization: Bearer $TOKEN"
 
-# 14. Obtener tasas de cambio con base EUR
-curl -i "http://localhost:5000/currency/rates?base_currency=EUR" \
+# 16. Obtener tasas de cambio con base EUR
+# Muestra todas las tasas desde EUR
+echo "\n\n16. Obtener tasas de cambio con base EUR"
+curl "http://localhost:5000/currency/rates?base_currency=EUR" \
   -H "Authorization: Bearer $TOKEN"
 
-# 15. Obtener lista de monedas soportadas
-curl -i http://localhost:5000/currency/supported \
+# 17. Obtener lista de monedas soportadas
+# Muestra las 166 monedas disponibles (AED, AFN, ALL, AMD, ARS, AUD, BRL, CAD, CHF, CNY, COP, EUR, GBP, INR, JPY, KRW, MXN, RUB, USD, ZAR, etc.)
+echo "\n\n17. Obtener lista de monedas soportadas"
+curl http://localhost:5000/currency/supported \
   -H "Authorization: Bearer $TOKEN"
 
-# 16. Obtener todos los productos con precios en MXN
-curl -i "http://localhost:5000/products/convert?currency=MXN" \
+# 18. Obtener todos los productos con precios en MXN
+# Convierte automáticamente el precio de todos los productos de USD a MXN
+echo "\n\n18. Obtener productos con precios en MXN"
+curl "http://localhost:5000/products/convert?currency=MXN" \
   -H "Authorization: Bearer $TOKEN"
 
-# 17. Obtener todos los productos con precios en EUR
-curl -i "http://localhost:5000/products/convert?currency=EUR" \
+# 19. Obtener todos los productos con precios en EUR
+# Convierte automáticamente el precio de todos los productos de USD a EUR
+echo "\n\n19. Obtener productos con precios en EUR"
+curl "http://localhost:5000/products/convert?currency=EUR" \
   -H "Authorization: Bearer $TOKEN"
 
-# 18. Obtener productos con precios en JPY (desde base USD)
-curl -i "http://localhost:5000/products/convert?currency=JPY&base_currency=USD" \
+# 20. Obtener productos con precios en COP
+# Convierte automáticamente el precio de todos los productos de USD a Pesos Colombianos
+echo "\n\n20. Obtener productos con precios en COP (Peso Colombiano)"
+curl "http://localhost:5000/products/convert?currency=COP" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 21. Obtener productos con precios en JPY (Yen Japonés)
+echo "\n\n21. Obtener productos con precios en JPY (Yen Japonés)"
+curl "http://localhost:5000/products/convert?currency=JPY&base_currency=USD" \
   -H "Authorization: Bearer $TOKEN"

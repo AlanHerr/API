@@ -90,23 +90,6 @@ API/
    python app.py
    ```
 
-### Frontend (React)
-1. Entra a la carpeta del frontend:
-   ```bash
-   cd frontend
-   ```
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-3. Inicia la app React:
-   ```bash
-   npm start
-   ```
-
----
-
-
 
 
 ## Variables de Entorno (Backend)
